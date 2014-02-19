@@ -1,5 +1,6 @@
 var express = require('express'),
-    Memcached = require('memcached');
+    Memcached = require('memcached'),
+    fs = require('fs');
 
 // Constants
 var port = 3000;
@@ -15,6 +16,8 @@ app.get('/', function (req, res) {
 });
 
 app.post('/test', function (req, res) {
+  fs.appendFile('/var/log/app/values.log', req.body.value + '\n', function (err) {});
+
   mc.set('foo', req.body.value, 3600, function (err) {
     if(err) {
       res.send('Could not set value\n', 500);
